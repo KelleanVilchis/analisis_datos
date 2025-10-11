@@ -1,0 +1,78 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+<!-- Hero Section -->
+    <section class="hero">
+        <div>
+            <h1>Sabores del Mundo</h1>
+            <p>Disfruta la mejor comida internacional en un solo lugar</p>
+            <a href="#menu" class="btn btn-warning btn-lg mt-3">Ver Menú</a>
+        </div>
+    </section>
+
+    <section id="nosotros" class="container my-5">
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Sobre Nosotros</h2>
+                <p>En Sabores del Mundo ofrecemos una experiencia culinaria única. Desde la pasta italiana hasta sushi fresco, cada platillo está preparado con ingredientes de la más alta calidad. Nuestro compromiso es hacerte sentir como en casa mientras disfrutas sabores de todo el planeta.</p>
+                <p>Nuestro equipo de chefs está apasionado por crear combinaciones únicas y presentaciones que deleitan la vista y el paladar.</p>
+            </div>
+            <div class="col-md-6">
+                <img src="https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg" alt="Restaurante" class="img-fluid rounded">
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="container my-5 menu-section">
+        <h2 class="text-center mb-4">Nuestro Menú</h2>
+        <div class="row">
+            <div class="col-md-4 menu-item">
+                <img src="https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg" alt="Pizza">
+                <h4 class="mt-2">Pizza Margherita</h4>
+                <p>Masa artesanal, tomate fresco, mozzarella y albahaca. Una verdadera delicia italiana.</p>
+            </div>
+            <div class="col-md-4 menu-item">
+                <img src="https://images.pexels.com/photos/357756/pexels-photo-357756.jpeg" alt="Sushi">
+                <h4 class="mt-2">Sushi Variado</h4>
+                <p>Selección de sushi fresco preparado al momento, perfecto para los amantes del mar.</p>
+            </div>
+            <div class="col-md-4 menu-item">
+                <img src="https://images.pexels.com/photos/1556418/pexels-photo-1556418.jpeg" alt="Tacos">
+                <h4 class="mt-2">Tacos Gourmet</h4>
+                <p>Deliciosos tacos con ingredientes locales y combinaciones únicas que sorprenden el paladar.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contacto" class="container my-5">
+        <h2 class="text-center mb-4">Contáctanos</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form>
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="nombre" placeholder="Tu nombre">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Correo electrónico</label>
+                        <input type="email" class="form-control" id="email" placeholder="correo@ejemplo.com">
+                    </div>
+                    <div class="mb-3">
+                        <label for="mensaje" class="form-label">Mensaje</label>
+                        <textarea class="form-control" id="mensaje" rows="4" placeholder="Escribe tu mensaje"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-warning w-100">Enviar</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer text-center">
+        <p>&copy; 2025 Sabores del Mundo. Todos los derechos reservados.</p>
+        <p>Síguenos en <a href="#">Instagram</a> | <a href="#">Facebook</a></p>
+    </footer>
+
+{% endblock content %}
