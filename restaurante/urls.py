@@ -7,4 +7,5 @@ urlpatterns = [
     path('', views.main_index, name='main_index'),
     path('accounts/', include('apps.accounts.urls')),
     path('platillos/', include('apps.platillos.urls')),
+    path('ordenes/', include('apps.ordenes.urls')),
 ]

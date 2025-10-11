@@ -1,0 +1,38 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<h1>Orden No. {{ orden.id }} - {{ orden.fecha_hora }}</h1>
+
+<form action="{% url 'ordenes:ordenes_detalle_list' orden.id %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Guardar</button>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Platillo</th>
+            <th>Cantidad</th>
+            <th>Notas</th>            
+        </tr>
+    </thead>
+    <tbody>
+        {% for detalle in orden_detalles %}
+        <tr>
+            <td>
+                <a class="btn btn-primary" href="">Editar</a>
+                <a class="btn btn-danger" href="">Eliminar</a>
+            </td>
+            <td>{{detalle.platillo.nombre}}</td>
+            <td>{{detalle.cantidad}}</td>
+            <td>{{detalle.notas}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{% url 'ordenes:ordenes_list' %}" class="btn btn-secondary">Regresar</a>
+
+{% endblock %}
