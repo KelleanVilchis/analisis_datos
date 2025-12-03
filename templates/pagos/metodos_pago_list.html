@@ -1,0 +1,28 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<h1>Lista de Métodos de Pago</h1>
+
+<a class="btn btn-primary" href="{% url 'ordenes:metodos_pago_create' %}">Agregar método de pago</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Nombre</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for metodo_pago in metodos_pago %}
+        <tr>
+            <td>
+                <a class="btn btn-primary" href="{% url 'ordenes:metodos_pago_edit' metodo_pago.pk %}">Editar</a>
+                <a class="btn btn-danger" href="{% url 'ordenes:metodos_pago_delete' metodo_pago.pk %}">Eliminar</a>
+            </td>
+            <td>{{ metodo_pago.nombre }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

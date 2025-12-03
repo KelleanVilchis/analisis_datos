@@ -1,0 +1,12 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<h1>Eliminar Método de Pago</h1>
+
+<form method="post">
+    {% csrf_token %}
+    <p>¿Estás seguro de que deseas eliminar el método de pago: "{{ object.nombre }}"?</p>
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a class="btn btn-primary" href="{% url 'ordenes:metodos_pago_list' %}">Regresar</a>
+</form>
+{% endblock %}
