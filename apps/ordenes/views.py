@@ -56,7 +56,6 @@ class OrdenListView(LoginRequiredMixin, ListView):
     model = Orden
     template_name = 'ordenes/ordenes_list.html'
     context_object_name = 'ordenes'
-    ordering = ['-fecha_hora']
 
 class OrdenCreateView(LoginRequiredMixin, CreateView):
     model = Orden
@@ -98,7 +97,7 @@ class OrdenDetalleView(LoginRequiredMixin, ListView):
             return self.get(request, *args, **kwargs)
         else:
             return render(request, self.template_name, {'form': form, 'orden_detalles': self.get_queryset(), 'orden': Orden.objects.get(id=self.kwargs.get('orden_id'))})
-
+        
 class OrdenDetalleUpdateView(LoginRequiredMixin, View):
     def get(self, request, pk):
         detalle = OrdenDetalle.objects.get(id=pk)
@@ -136,32 +135,56 @@ class OrdenDetalleDeleteView(LoginRequiredMixin, DeleteView):
         return f'/ordenes/ordenes/{self.object.orden.id}/detalles/'
 
 class OrdenPagarView(LoginRequiredMixin, View):
-    def get(self, request, orden_id):
-        orden = Orden.objects.get(id=orden_id)
+
+    def get(self, request, pk):
+        orden = Orden.objects.get(pk=pk)
         detalles = OrdenDetalle.objects.filter(orden=orden)
         total = sum(detalle.cantidad * detalle.precio_unitario for detalle in detalles)
-        
-        form = PagoForm(initial={'orden': orden, 'cantidad': total})
 
-        return render(request, 'ordenes/ordenes_pagar.html', {'orden': orden, 'detalles': detalles, 'total': total, 'form': form})
-    def post(self, request, orden_id):
-        form = PagoForm(request.POST)
-        if form.is_valid():
-            with transaction.atomic():
-                pago = form.save(commit=False)
-                pago.orden = Orden.objects.get(id=orden_id)
-                pago.save()
+        metodos = MetodoPago.objects.all()
 
-                orden = pago.orden
-                orden.estatus = 'pagada'
-                orden.save()
+        return render(request, 'ordenes/ordenes_pagar.html', {
+            'orden': orden,
+            'total': total,       # <-- SE PASA COMO VARIABLE
+            'metodos': metodos
+        })
 
-                mesa = orden.mesa
-                mesa.estado = MesaEstado.objects.get(nombre='Disponible')
-                mesa.save()
 
-                return redirect('ordenes:ordenes_list')
-        return render(request, 'ordenes/ordenes_pagar.html', {'form': form})
+    def post(self, request, pk):
+        orden = Orden.objects.get(pk=pk)
+
+        metodo_id = request.POST.get("metodo_pago")
+        cantidad = request.POST.get("cantidad")
+
+        if not metodo_id or not cantidad:
+            detalles = OrdenDetalle.objects.filter(orden=orden)
+            total = sum(detalle.cantidad * detalle.precio_unitario for detalle in detalles)
+
+            return render(request, 'ordenes/ordenes_pagar.html', {
+                'orden': orden,
+                'total': total,  # <-- también aquí
+                'metodos': MetodoPago.objects.all(),
+                'error': "Debes seleccionar un método de pago."
+            })
+
+        with transaction.atomic():
+            pago = Pago.objects.create(
+                orden=orden,
+                metodo_pago=MetodoPago.objects.get(id=metodo_id),
+                cantidad=cantidad
+            )
+
+            orden.estatus = 'pagada'
+            orden.save()
+
+            mesa = orden.mesa
+            mesa.estado = MesaEstado.objects.get(nombre='Disponible')
+            mesa.save()
+
+        return redirect('ordenes:ordenes_list')
+
+
+
 
 class MetodoPagoListView(LoginRequiredMixin, ListView):
     model = MetodoPago

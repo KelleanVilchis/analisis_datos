@@ -22,6 +22,14 @@ class Orden(models.Model):
     fecha_hora = models.DateTimeField(auto_now_add=True)
     estatus = models.CharField(max_length=50, default='pendiente')
 
+    @property
+    def total(self):
+        # suma cada detalle: cantidad * precio_unitario
+        return sum(d.cantidad * d.precio_unitario for d in self.detalles.all())
+    
+    def __str__(self):
+        return self.mesa.nombre
+
 class OrdenDetalle(models.Model):
     orden = models.ForeignKey(Orden, on_delete=models.CASCADE, related_name='detalles')
     platillo = models.ForeignKey(Platillo, on_delete=models.CASCADE, related_name='detalles')

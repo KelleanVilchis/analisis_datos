@@ -1,0 +1,26 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Pagar Orden #{{ orden.id }}</h2>
+    <p><strong>Mesa:</strong> {{ orden.mesa }}</p>
+
+    <form method="post" action="{% url 'ordenes:orden_pagar' orden.pk %}">
+        {% csrf_token %}
+
+        <!-- Campo oculto para la cantidad -->
+        <input type="hidden" name="cantidad" value="{{ orden.total }}">
+
+        <label for="metodo_pago">Selecciona método de pago:</label>
+        <select name="metodo_pago" class="form-control" required>
+            <option value="">-- Selecciona --</option>
+            {% for metodo in metodos %}
+            <option value="{{ metodo.id }}">{{ metodo.nombre }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit" class="btn btn-success mt-3">Pagar</button>
+        <a href="{% url 'ordenes:ordenes_list' %}" class="btn btn-secondary mt-3">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

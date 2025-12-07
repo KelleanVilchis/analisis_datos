@@ -20,6 +20,10 @@
             <td>
                 <a class="btn btn-primary" href="{% url 'ordenes:ordenes_detalle_list' orden.pk %}">Editar</a>
                 <a class="btn btn-danger" href="">Eliminar</a>
+                <a href="{% url 'ordenes:orden_pagar' orden.id %}" class="btn btn-success btn-sm">
+                    Pagar
+                </a>
+
             </td>
             <td>{{orden.fecha_hora}}</td>
             <td>{{orden.mesa.nombre}}</td>

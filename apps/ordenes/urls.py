@@ -23,4 +23,6 @@ urlpatterns = [
     path('metodos_pago/editar/<int:pk>/', views.MetodoPagoUpdateView.as_view(), name='metodos_pago_edit'),
     path('metodos_pago/eliminar/<int:pk>/', views.MetodoPagoDeleteView.as_view(), name='metodos_pago_delete'),
     path('pagos/', views.PagoListView.as_view(), name='pagos_list'),
+    path('ordenes/<int:pk>/pagar/', views.OrdenPagarView.as_view(), name='orden_pagar'),
+
 ]

@@ -1,78 +1,199 @@
 {% extends "main/base.html" %}
 
 {% block content %}
-<!-- Hero Section -->
-    <section class="hero">
-        <div>
-            <h1>Sabores del Mundo</h1>
-            <p>Disfruta la mejor comida internacional en un solo lugar</p>
-            <a href="#menu" class="btn btn-warning btn-lg mt-3">Ver Menú</a>
-        </div>
-    </section>
 
-    <section id="nosotros" class="container my-5">
-        <div class="row">
-            <div class="col-md-6">
-                <h2>Sobre Nosotros</h2>
-                <p>En Sabores del Mundo ofrecemos una experiencia culinaria única. Desde la pasta italiana hasta sushi fresco, cada platillo está preparado con ingredientes de la más alta calidad. Nuestro compromiso es hacerte sentir como en casa mientras disfrutas sabores de todo el planeta.</p>
-                <p>Nuestro equipo de chefs está apasionado por crear combinaciones únicas y presentaciones que deleitan la vista y el paladar.</p>
-            </div>
-            <div class="col-md-6">
-                <img src="https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg" alt="Restaurante" class="img-fluid rounded">
-            </div>
-        </div>
-    </section>
+<section class="hero">
+    <div>
+        <h1>Sabores del Mundo</h1>
+        <p>Disfruta la mejor comida internacional en un solo lugar</p>
+        <a href="#menu" class="btn btn-warning btn-lg mt-3">Ver Menú</a>
+    </div>
+</section>
 
-    <!-- Menu Section -->
-    <section id="menu" class="container my-5 menu-section">
-        <h2 class="text-center mb-4">Nuestro Menú</h2>
-        <div class="row">
-            <div class="col-md-4 menu-item">
-                <img src="https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg" alt="Pizza">
-                <h4 class="mt-2">Pizza Margherita</h4>
-                <p>Masa artesanal, tomate fresco, mozzarella y albahaca. Una verdadera delicia italiana.</p>
-            </div>
-            <div class="col-md-4 menu-item">
-                <img src="https://images.pexels.com/photos/357756/pexels-photo-357756.jpeg" alt="Sushi">
-                <h4 class="mt-2">Sushi Variado</h4>
-                <p>Selección de sushi fresco preparado al momento, perfecto para los amantes del mar.</p>
-            </div>
-            <div class="col-md-4 menu-item">
-                <img src="https://images.pexels.com/photos/1556418/pexels-photo-1556418.jpeg" alt="Tacos">
-                <h4 class="mt-2">Tacos Gourmet</h4>
-                <p>Deliciosos tacos con ingredientes locales y combinaciones únicas que sorprenden el paladar.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contacto" class="container my-5">
-        <h2 class="text-center mb-4">Contáctanos</h2>
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <form>
-                    <div class="mb-3">
-                        <label for="nombre" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="nombre" placeholder="Tu nombre">
+<div class="row mb-4 mt-5">
+    <div class="col-12">
+        <h2 class="mb-4">Dashboard {{pepe}}</h2>
+        <div class="row g-4 mb-4">
+            <div class="col-md-3">
+                <div class="stat-card card bg-white">
+                    <div class="card-body">
+                        <h6 class="text-muted">Ventas Hoy</h6>
+                        <h3>{{ ventas_totales }}</h3>
+                        <i class="bi bi-currency-dollar text-primary"></i>
                     </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Correo electrónico</label>
-                        <input type="email" class="form-control" id="email" placeholder="correo@ejemplo.com">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card card bg-white">
+                    <div class="card-body">
+                        <h6 class="text-muted">Órdenes Hoy</h6>
+                        <h3>{{ cantidad_ordenes }}</h3>
+                        <i class="bi bi-cart-check text-success"></i>
                     </div>
-                    <div class="mb-3">
-                        <label for="mensaje" class="form-label">Mensaje</label>
-                        <textarea class="form-control" id="mensaje" rows="4" placeholder="Escribe tu mensaje"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-warning w-100">Enviar</button>
-                </form>
+                </div>
             </div>
         </div>
-    </section>
+        <div class="row g-4">
+            <div class="col-md-8">
+                <div class="card h-100">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">Ventas de la Semana</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="graficaVentas" height="100"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">Órdenes Recientes</h5>
+                    </div>
+                    <div class="card-body">
+                        {% for orden in ultimas_ordenes %}
+                            <div class="d-flex justify-content-between mb-3">
+                                <div>
+                                    <strong>{{ orden.mesa.nombre }}</strong><br>
+                                    <small>#ORD-{{ orden.id }}</small>
+                                </div>
+                                <span class="badge 
+                                    {% if orden.estatus == 'pagada' %} bg-success
+                                    {% elif orden.estatus == 'pendiente' %} bg-warning text-dark
+                                    {% else %} bg-danger {% endif %}
+                                ">
+                                {{ orden.estatus }}
+                                </span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <!-- Footer -->
-    <footer class="footer text-center">
-        <p>&copy; 2025 Sabores del Mundo. Todos los derechos reservados.</p>
-        <p>Síguenos en <a href="#">Instagram</a> | <a href="#">Facebook</a></p>
-    </footer>
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">Platos Más Populares</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>Platillo</th>
+                                <th>Cantidad</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for p in platillos_mas_vendidos %}
+                                {% if p.total_vendido > 0 %}
+                                <tr>
+                                    <td>{{ p.detalles__platillo__nombre }}</td>
+                                    <td>{{ p.total_vendido }}</td>
+                                </tr>
+                                {% endif %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-{% endblock content %}
+    </div>
+</div>
+
+
+<section id="info-restaurante" class="container my-5">
+    <h2 class="text-center mb-4">Conoce Más Sobre Sabores del Mundo</h2>
+
+    <div class="row align-items-center mb-5">
+        <div class="col-md-6">
+            <img src="https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg" 
+                 alt="Chef preparando comida" 
+                 class="img-fluid rounded shadow">
+        </div>
+        <div class="col-md-6">
+            <h3>Nuestra Historia</h3>
+            <p>
+                Sabores del Mundo nació con la idea de traer a un solo lugar los platillos más representativos 
+                de diferentes culturas. Empezamos como un pequeño local familiar y gracias a nuestro compromiso 
+                con la calidad, hoy somos uno de los restaurantes más visitados de la ciudad.
+            </p>
+            <p>
+                Nuestra misión es ofrecer experiencias gastronómicas memorables, fusionando técnicas 
+                tradicionales con un toque moderno.
+            </p>
+        </div>
+    </div>
+
+    <div class="row align-items-center mb-5 flex-md-row-reverse">
+        <div class="col-md-6">
+            <img src="https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg" 
+                 alt="Interior del restaurante" 
+                 class="img-fluid rounded shadow">
+        </div>
+        <div class="col-md-6">
+            <h3>Ambiente y Estilo</h3>
+            <p>
+                Contamos con un ambiente acogedor diseñado para que cada visita sea especial. Desde 
+                cenas familiares hasta reuniones de trabajo, nuestro espacio está pensado para adaptarse 
+                a cualquier ocasión.
+            </p>
+            <p>
+                Cada detalle, desde la música hasta la iluminación, está cuidadosamente seleccionado 
+                para que tu experiencia sea única.
+            </p>
+        </div>
+    </div>
+
+    <div class="row align-items-center">
+        <div class="col-md-6">
+            <img src="https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg" 
+                 alt="Equipo de cocina" 
+                 class="img-fluid rounded shadow">
+        </div>
+        <div class="col-md-6">
+            <h3>Nuestro Equipo</h3>
+            <p>
+                Contamos con chefs con experiencia internacional que han trabajado en algunos de los 
+                mejores restaurantes del mundo. Su pasión por la cocina se refleja en cada platillo que servimos.
+            </p>
+            <p>
+                Además, nuestro personal de servicio está capacitado para ofrecer atención cálida, 
+                rápida y profesional.
+            </p>
+        </div>
+    </div>
+</section>
+
+
+
+<footer class="footer text-center">
+    <p>&copy; 2025 Sabores del Mundo. Todos los derechos reservados.</p>
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const labels = {{ ventas_por_dia_labels|safe }};
+const datos = {{ ventas_por_dia_datos|safe }};
+
+new Chart(document.getElementById('graficaVentas'), {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Ventas de la semana',
+            data: datos,
+            borderWidth: 3,
+            borderColor: 'rgb(75, 192, 192)',
+            fill: false
+        }]
+    }
+});
+</script>
+
+
+{% endblock %}
