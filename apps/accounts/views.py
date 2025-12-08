@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from .forms import LoginForm
+from .forms import LoginForm, RegistrationForm
 from .models import AppUser
-from django.views.generic import ListView
+from django.views.generic import ListView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 def login_view(request):
@@ -11,12 +11,16 @@ def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
+            # Aquí iría la lógica de autenticación del usuario
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             remember_me = form.cleaned_data['remember_me']
+            # Autenticación y redirección según sea necesario
             usuario = authenticate(request, username=username, password=password)
             if usuario is not None:
                 login(request, usuario)
+                
+                # Redirigir a la página principal o a la que corresponda
                 return redirect('accounts:user_list')
             else:
                 form.add_error(None, 'Credenciales inválidas')
@@ -29,10 +33,26 @@ def logout_view(request):
     logout(request)
     return redirect('main_index')
 
-
-
 class UserListView(LoginRequiredMixin, ListView):
     login_url = 'accounts:login'
     model = AppUser
     template_name = 'accounts/user_list.html'
     context_object_name = 'users'
+
+class RegisterUserView(View):
+    def get(self, request):
+        form = RegistrationForm()
+        return render(request, 'accounts/register.html', {'form': form})
+
+    def post(self, request):
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password1']
+            
+            user = AppUser.objects.create_user(username=username, email=email, password=password)
+            user.save()
+            
+            return redirect('accounts:login')
+        return render(request, 'accounts/register.html', {'form': form})
