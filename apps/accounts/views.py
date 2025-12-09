@@ -21,7 +21,7 @@ def login_view(request):
                 login(request, usuario)
                 
                 # Redirigir a la página principal o a la que corresponda
-                return redirect('accounts:user_list')
+                return redirect('main_index')
             else:
                 form.add_error(None, 'Credenciales inválidas')
     context = {

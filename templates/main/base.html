@@ -104,7 +104,6 @@
     <nav class="sidebar">
         <h3>Sabores</h3>
         <a href="{% url "main_index" %}">Inicio</a>
-        <a href="#">Menú</a>
         <a href="{% url "platillos:categoria_list" %}">Categorias</a>
         <a href="{% url "platillos:platillos_list" %}">Platillos</a>
         <a href="{% url "ordenes:ordenes_list" %}">Ordenes</a>
@@ -112,7 +111,6 @@
         <a href="{% url "ordenes:mesas_estado_list" %}">Estado de Mesas</a>
         <a href="{% url "platillos:platillos_list" %}">Platillos</a>
         <a href="{% url 'ordenes:pagos_list' %}"><i class="bi bi-credit-card"></i> Pagos</a>
-        <a href="#nosotros">Sobre Nosotros</a>
         {% if request.user.is_authenticated %}
         <a href="{% url "accounts:logout" %}">Cerrar Sesion</a>
         {% else %}

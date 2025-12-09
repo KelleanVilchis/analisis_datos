@@ -11,6 +11,8 @@
             <th></th>
             <th>Fecha</th>
             <th>Mesa</th>
+            <th>Total</th>
+
             <th>Estatus</th>
         </tr>
     </thead>
@@ -27,6 +29,7 @@
             </td>
             <td>{{orden.fecha_hora}}</td>
             <td>{{orden.mesa.nombre}}</td>
+            <td>${{orden.total}}</td>
             <td>{{orden.estatus}}</td>
         </tr>
         {% endfor %}
